@@ -16,6 +16,7 @@ class Config:
     exit: tuple[int, int]
     output_file: str
     perfect: bool
+    seed: int | None = None
 
 
 def parse_config(filepath: str) -> Config:

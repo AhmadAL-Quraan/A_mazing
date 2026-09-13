@@ -1,6 +1,7 @@
 import sys
 
 from src.config import ConfigError, parse_config
+from src.mazegen.generator import Generator
 
 
 def main() -> None:
@@ -17,9 +18,7 @@ def main() -> None:
 
     print(config)
 
-    # Later:
-    # generator = Generator(config)
-    # grid = generator.generate()
+    generator = Generator(config)
 
 
 if __name__ == "__main__":
