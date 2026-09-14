@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -17,6 +16,7 @@ class Config:
     exit: tuple[int, int]
     output_file: str
     perfect: bool
+    seed: int | None = None
 
 
 def parse_config(filepath: str) -> Config:
@@ -44,9 +44,7 @@ def parse_config(filepath: str) -> Config:
             continue
 
         if "=" not in line:
-            raise ConfigError(
-                f"Line {line_number}: expected KEY=VALUE."
-            )
+            raise ConfigError(f"Line {line_number}: expected KEY=VALUE.")
 
         key, value = line.split("=", 1)
         key = key.strip().upper()
@@ -63,9 +61,7 @@ def parse_config(filepath: str) -> Config:
             )
 
         if key in data:
-            raise ConfigError(
-                f"Line {line_number}: duplicate key '{key}'."
-            )
+            raise ConfigError(f"Line {line_number}: duplicate key '{key}'.")
 
         data[key] = value
 
@@ -82,8 +78,7 @@ def parse_config(filepath: str) -> Config:
 
     if missing:
         raise ConfigError(
-            "Missing required key(s): "
-            + ", ".join(sorted(missing))
+            "Missing required key(s): " + ", ".join(sorted(missing))
         )
 
     width = parse_positive_int(data["WIDTH"], "WIDTH")
@@ -111,9 +106,7 @@ def parse_int(value: str, key: str) -> int:
     try:
         return int(value)
     except ValueError as exc:
-        raise ConfigError(
-            f"{key} must be an integer, got '{value}'."
-        ) from exc
+        raise ConfigError(f"{key} must be an integer, got '{value}'.") from exc
 
 
 def parse_positive_int(value: str, key: str) -> int:
@@ -121,9 +114,7 @@ def parse_positive_int(value: str, key: str) -> int:
     number = parse_int(value, key)
 
     if number <= 0:
-        raise ConfigError(
-            f"{key} must be greater than 0, got {number}."
-        )
+        raise ConfigError(f"{key} must be greater than 0, got {number}.")
 
     return number
 
@@ -136,9 +127,7 @@ def parse_coordinate(
     parts = value.split(",")
 
     if len(parts) != 2:
-        raise ConfigError(
-            f"{key} must use x,y format, got '{value}'."
-        )
+        raise ConfigError(f"{key} must use x,y format, got '{value}'.")
 
     x = parse_int(parts[0].strip(), key)
     y = parse_int(parts[1].strip(), key)
@@ -156,9 +145,7 @@ def parse_bool(value: str, key: str) -> bool:
     if normalized == "false":
         return False
 
-    raise ConfigError(
-        f"{key} must be True or False, got '{value}'."
-    )
+    raise ConfigError(f"{key} must be True or False, got '{value}'.")
 
 
 def validate_config(config: Config) -> None:
@@ -166,25 +153,17 @@ def validate_config(config: Config) -> None:
     entry_x, entry_y = config.entry
     exit_x, exit_y = config.exit
 
-    if not (
-        0 <= entry_x < config.width
-        and 0 <= entry_y < config.height
-    ):
+    if not (0 <= entry_x < config.width and 0 <= entry_y < config.height):
         raise ConfigError(
             f"ENTRY {config.entry} is outside maze bounds "
             f"{config.width}x{config.height}."
         )
 
-    if not (
-        0 <= exit_x < config.width
-        and 0 <= exit_y < config.height
-    ):
+    if not (0 <= exit_x < config.width and 0 <= exit_y < config.height):
         raise ConfigError(
             f"EXIT {config.exit} is outside maze bounds "
             f"{config.width}x{config.height}."
         )
 
     if config.entry == config.exit:
-        raise ConfigError(
-            "ENTRY and EXIT must be different."
-        )
+        raise ConfigError("ENTRY and EXIT must be different.")
