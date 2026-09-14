@@ -12,22 +12,11 @@ from src.mazegen.generator import Generator
 from src.maze_view.maze_view import MazeView
 from stub_solver import bfs_stub
 
-
-class FakeConfig:
-    """Bare-bones stand-in for Config, just holding what Generator needs."""
-
-    def __init__(
-        self, width: int, height: int, seed: int | None, perfect: bool
-    ) -> None:
-        self.width = width
-        self.height = height
-        self.seed = seed
-        self.perfect = perfect
+from src.config import Config
 
 
 def main() -> None:
-    config = FakeConfig(width=6, height=6, seed=42, perfect=True)
-
+    config = Config(10,10,(0,0),(9,9),"output_file.txt",False,42)
     generator = Generator(config)
     grid = generator.generate()
 

@@ -1,6 +1,7 @@
 from .grid import Grid
 from src.config import Config
 import random
+from src.mazegen import Cell
 
 
 class Generator:
@@ -15,6 +16,62 @@ class Generator:
         self.config = config
         self.rng = random.Random(config.seed)
 
+    def patternn(self,patterN_42:set[tuple[int,int]]) -> None:
+        """Draw the 42 pattern on the grid 
+
+        Args: 
+           patterN_42: Spot 42 pattern in the grid and reference it 
+        """
+        width = self.config.width
+        height = self.config.height
+        if width >= 9 and height >=7 : 
+            x:int = int((width - 7)/2)
+            y:int = int((height - 5)/2)
+            patterN_42.add((x,y))
+            y += 1
+            patterN_42.add((x,y))
+            y+=1
+            patterN_42.add((x,y))
+            x += 1
+            patterN_42.add((x,y))
+            x+=1
+            patterN_42.add((x,y))
+            y +=1 
+            patterN_42.add((x,y))
+            y +=1 
+            patterN_42.add((x,y))
+            x += 2 
+            y -=4 
+            patterN_42.add((x,y))
+            x += 1
+            patterN_42.add((x,y))
+            x +=1
+            patterN_42.add((x,y))
+            y += 1
+            patterN_42.add((x,y))
+            y += 1
+            patterN_42.add((x,y))
+            x -= 1
+            patterN_42.add((x,y))
+            x -= 1
+            patterN_42.add((x,y))
+            y+= 1
+            patterN_42.add((x,y))
+            y+= 1
+            patterN_42.add((x,y))
+            x += 1
+            patterN_42.add((x,y))
+            x += 1
+            patterN_42.add((x,y))
+
+
+
+
+
+
+
+        
+
     def generate(self) -> Grid:
         """Generate and return a maze as a Grid.
 
@@ -26,46 +83,89 @@ class Generator:
         dy = [0, 0, 1, -1]
         directions = ["east", "west", "south", "north"]
 
-        if self.config.perfect:
-            visited: set[tuple[int, int]] = set()
-            stack: list[tuple[int, int]] = [(0, 0)]
-            visited.add((0, 0))
+        visited: set[tuple[int, int]] = set()
+        patterN_42 : set[tuple[int,int]]=set() 
+        self.patternn(patterN_42)
+        
 
-            while stack:
-                x, y = stack[-1]
-                neighbors: list[tuple[int, int, str]] = []
-                for i in range(4):
-                    new_x = x + dx[i]
-                    new_y = y + dy[i]
-                    if (
-                        (new_x, new_y) not in visited
-                        and 0 <= new_x < self.config.width
-                        and 0 <= new_y < self.config.height
-                    ):
-                        neighbors.append((new_x, new_y, directions[i]))
+        stack: list[tuple[int, int]] = [(0, 0)]
+        visited.add((0, 0))
 
-                if not neighbors:
-                    stack.pop()
-                    continue
+        while stack:
+            x, y = stack[-1]
+            neighbors: list[tuple[int, int, str]] = []
+            for i in range(4):
+                new_x = x + dx[i]
+                new_y = y + dy[i]
+                if (
+                    (new_x, new_y) not in visited 
+                    and (new_x,new_y) not in patterN_42
+                    and 0 <= new_x < self.config.width
+                    and 0 <= new_y < self.config.height
+                ):
+                    neighbors.append((new_x, new_y, directions[i]))
 
-                nx, ny, direction = self.rng.choice(neighbors)
-                current = grid.get_cell(x, y)
-                neighbor = grid.get_cell(nx, ny)
+            if not neighbors:
+                stack.pop()
+                continue
 
-                if direction == "east":
-                    current.east = False
-                    neighbor.west = False
-                elif direction == "south":
-                    current.south = False
-                    neighbor.north = False
-                elif direction == "west":
-                    current.west = False
-                    neighbor.east = False
-                elif direction == "north":
-                    current.north = False
-                    neighbor.south = False
+            nx, ny, direction = self.rng.choice(neighbors)
+            current = grid.get_cell(x, y)
+            neighbor = grid.get_cell(nx, ny)
 
-                visited.add((nx, ny))
-                stack.append((nx, ny))
+            if direction == "east":
+                current.east = False
+                neighbor.west = False
+            elif direction == "south":
+                current.south = False
+                neighbor.north = False
+            elif direction == "west":
+                current.west = False
+                neighbor.east = False
+            elif direction == "north":
+                current.north = False
+                neighbor.south = False
+
+            visited.add((nx, ny))
+            stack.append((nx, ny))
+
+        if not self.config.perfect: 
+            for y in range(self.config.height):
+                for x in range(self.config.width): 
+                    if (x,y) in patterN_42:
+                        continue;
+                    not_broken:list = []
+                    cell = grid.get_cell(x,y)
+                    count:int = 4 
+                    if cell.east == True:
+                        count -= 1
+                        if x != self.config.width - 1:
+                            not_broken.append("east")
+                    if cell.north == True: 
+                        count -= 1
+                        if y != 0:
+                            not_broken.append("north")
+                    if cell.south == True:
+                        count -= 1
+                        if y != self.config.height - 1: 
+                            not_broken.append("south")
+                    if cell.west ==True:
+                        count -= 1
+                        if x!=0:
+                            not_broken.append("west")
+
+                    choose:str
+                    if count  == 1: 
+
+                        choose= self.rng.choice(not_broken)
+                        if choose == "east":
+                            cell.east = False
+                        if choose == "west":
+                            cell.west = False
+                        if choose == "north":
+                            cell.north = False
+                        if choose == "south":
+                            cell.south = False
+
 
         return grid
