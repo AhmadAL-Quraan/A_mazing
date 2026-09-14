@@ -16,7 +16,7 @@ from src.config import Config
 
 
 def main() -> None:
-    config = Config(10,10,(0,0),(9,9),"output_file.txt",False,42)
+    config = Config(10, 10, (0, 0), (9, 9), "output_file.txt", False, 42)
     generator = Generator(config)
     grid = generator.generate()
 
