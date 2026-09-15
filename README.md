@@ -16,4 +16,16 @@
 * **BFS algorithm** to find shortest path between entry and exit cells as requested in the task.
 
 
+# Tasks 
+
+
+- [x] Configuration file and format and error checking.
+- [x] Perfect maze algorithm.
+- [x] Imperfect maze algorithm.
+- [x] Print and configure 42 Logo 
+- [ ] Makefile
+- [ ] Hexawriter
+- [x] Shortest path between start and end.
+- [ ] Generating .whl file and pyproject.toml
+- [x] README
 
