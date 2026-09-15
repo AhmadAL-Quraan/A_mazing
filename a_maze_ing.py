@@ -2,6 +2,8 @@ import sys
 
 from src.config import ConfigError, parse_config
 from src.mazegen.generator import Generator
+from src.maze_view.maze_view import MazeView
+from src.solver import bfs_solve
 
 
 def main() -> None:
@@ -19,6 +21,10 @@ def main() -> None:
     print(config)
 
     generator = Generator(config)
+    grid = generator.generate()
+    bfs_solve(grid, config.entry, config.exit)
+    view = MazeView(grid, config.entry, config.exit, bfs_solve, generator)
+    view.run()
 
 
 if __name__ == "__main__":
