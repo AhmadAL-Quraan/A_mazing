@@ -15,7 +15,7 @@ def bfs_solve(
 
 
     """
-    queue = deque()
+    queue: deque[tuple[int, int]] = deque()
     queue.append(entry)
     visited: set[tuple[int, int]] = set()
     cost: dict[tuple[int, int], int] = {}

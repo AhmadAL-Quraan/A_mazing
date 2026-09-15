@@ -6,6 +6,9 @@ from src.maze_view.maze_view import MazeView
 from src.solver import bfs_solve
 
 
+from src.writer.output_writer import OutputWriter
+
+
 def main() -> None:
     """Run A-Maze-ing."""
     if len(sys.argv) != 2:
@@ -22,7 +25,12 @@ def main() -> None:
 
     generator = Generator(config)
     grid = generator.generate()
-    bfs_solve(grid, config.entry, config.exit)
+    path = bfs_solve(grid, config.entry, config.exit)
+
+    OutputWriter.write(
+        grid, config.entry, config.exit, path, config.output_file
+    )
+
     view = MazeView(grid, config.entry, config.exit, bfs_solve, generator)
     view.run()
 
