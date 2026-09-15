@@ -1,0 +1,18 @@
+## Tasks 
+
+
+13/9/2026
+
+- Implementing perfect maze using DFS with backtracking algorithm
+- Finishing Configuration format and checking 
+
+14/9/2026
+
+- Implementing Imperfect maze using the same algorithm from the perfect one but with breaking some extra walls, by checking if any walls has only one open wall, then make it 2 walls opens with constraints about the edges wall also the 42 pattern neighbors.
+
+  
+15/9/2026
+
+- Implementing Implementing BFS algorithm to find the shortest path between entry and exit points.
+- Adding toggle view on the ascii terminal for BFS found cells.
+
