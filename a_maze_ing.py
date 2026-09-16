@@ -7,9 +7,6 @@ from src.solver import bfs_solve
 from src.writer.output_writer import writer_hex
 
 
-from src.writer.output_writer import OutputWriter
-
-
 def main() -> None:
     """Parse configuration file,
       generate a maze then write the output (hexadecimal format)
@@ -30,8 +27,6 @@ def main() -> None:
     except ConfigError as error:
         print(f"Error: {error}", file=sys.stderr)
         sys.exit(1)
-
-    print(config)
 
     generator = Generator(config)
     grid = generator.generate()

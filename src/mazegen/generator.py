@@ -14,6 +14,7 @@ class Generator:
         """
         self.config = config
         self.rng = random.Random(config.seed)
+        print(config.seed)
 
     def patternn(self, patterN_42: set[tuple[int, int]]) -> None:
         """Draw the 42 pattern on the grid
