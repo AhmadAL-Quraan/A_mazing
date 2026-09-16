@@ -10,7 +10,10 @@ debug:
 clean: 
 	@find . -type d -name "__pycache__" -exec rm -rf {} +
 	@rm -rf .mypy_cache
+	@rm -rf dist 
+	@rm -rf src/mazegen.egg-info
 	@echo "Done"
+
 
 lint:
 	@flake8 .
