@@ -135,7 +135,7 @@ class Generator:
                 for x in range(self.config.width):
                     if (x, y) in patterN_42:
                         continue
-                    not_broken: list = []
+                    not_broken: list[str] = []
                     cell = grid.get_cell(x, y)
                     count: int = 4
                     if cell.east == True:
