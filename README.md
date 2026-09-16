@@ -23,9 +23,11 @@
 - [x] Perfect maze algorithm.
 - [x] Imperfect maze algorithm.
 - [x] Print and configure 42 Logo 
-- [ ] Makefile
+- [x] Makefile
 - [ ] Hexawriter
 - [x] Shortest path between start and end.
 - [ ] Generating .whl file and pyproject.toml
 - [x] README
+- [ ] Check mypy and flake8
+- [ ] Docstrings
 

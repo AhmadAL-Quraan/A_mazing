@@ -4,6 +4,7 @@ from src.config import ConfigError, parse_config
 from src.mazegen.generator import Generator
 from src.maze_view.maze_view import MazeView
 from src.solver import bfs_solve
+from src.writer.output_writer import writer_hex
 
 
 def main() -> None:
@@ -22,9 +23,18 @@ def main() -> None:
 
     generator = Generator(config)
     grid = generator.generate()
-    bfs_solve(grid, config.entry, config.exit)
+    shortest = bfs_solve(grid, config.entry, config.exit)
     view = MazeView(grid, config.entry, config.exit, bfs_solve, generator)
     view.run()
+    writer_hex(
+        grid,
+        shortest,
+        config.entry,
+        config.exit,
+        config.height,
+        config.width,
+        config.output_file,
+    )
 
 
 if __name__ == "__main__":
