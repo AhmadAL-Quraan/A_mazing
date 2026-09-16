@@ -4,10 +4,14 @@
 This project aims to make a maze for pacman-like game.
 A maze is either **perfect** or **imperfect**:
 * Perfect maze: one path between any two nodes, with a lot of dead ends in the maze.
-* Imperfect maze: At least two paths between any two nodes in the maze with least dead ends.
+* Imperfect maze: At least two paths between any two nodes in the maze with minimum dead ends.
 
 ![](./pic/class_diagram.jpeg)
+* Generated maze (perfect)
+![](./pic/maze_example.png)
 
+* Generated maze (imperfect)
+![](./pic/maze_exampl_imperfect.png)
 ## Instructions
 To run the main program:
 ```bash
@@ -21,6 +25,18 @@ The package is built as a `.whl` file (`mazegen-1.0.0-py3-none-any.whl`).
 **Installation:**
 ```bash
 pip install mazegen-1.0.0-py3-none-any.whl
+```
+
+**Configuration example**:
+
+```txt
+
+WIDTH=20
+HEIGHT=15
+ENTRY=0,0
+EXIT=19,14
+OUTPUT_FILE=maze.txt
+PERFECT=False
 ```
 
 **Usage Example:**
@@ -44,8 +60,6 @@ shortest_path = bfs_solve(grid, config.entry, config.exit)
 print("Shortest Path Coordinates:", shortest_path)
 ```
 
-## Resources
-* AI was used to help review the codebase, enforce PEP8/flake8 compliance, add correct type hinting for `mypy --strict`, build the `OutputWriter` (Hexawriter), configure the `pyproject.toml`, and generate the `.whl` distribution package.
 
 ## Algorithms
 * **Perfect**: DFS with backtracking to make the perfect maze.
@@ -62,6 +76,15 @@ print("Shortest Path Coordinates:", shortest_path)
 - [x] Shortest path between start and end.
 - [x] Generating .whl file and pyproject.toml
 - [x] README
-- [ ] Flake8 and mypy check 
-- [ ] Docstrings
+- [x] Flake8 and mypy check 
+- [x] Docstrings
 
+
+## Debugging  
+
+* Used `maze_analyzer.py` to check whether the generated maze is used by pacman or not.
+* If perfect maze (not used by pacman):
+![](./pic/perfect_maze.png)
+
+* If Imperfect maze (used by pacman):
+![](./pic/imperfect_maze.png)

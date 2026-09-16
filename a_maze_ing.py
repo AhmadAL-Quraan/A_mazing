@@ -11,10 +11,12 @@ def main() -> None:
     """Parse configuration file,
       generate a maze then write the output (hexadecimal format)
 
-    Reads a config file path form command line arg, parses it then draw the maze
+    Reads a config file path form command line arg, parses
+    it then draw the maze
 
     Raises:
-         SystemExit: If the number of command line is incorrect or the config file is wrong misconfigured
+         SystemExit: If the number of command line is incorrect or the config
+         file is wrong misconfigured
     """
     if len(sys.argv) != 2:
         print("Usage: python3 a_maze_ing.py <config_file>", file=sys.stderr)

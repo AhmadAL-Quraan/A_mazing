@@ -8,7 +8,18 @@ class ConfigError(Exception):
 
 @dataclass
 class Config:
-    """Store validated maze configuration."""
+    """Store validated maze configuration.
+
+    Attributes:
+        width: Number of columns in the maze.
+        height: Number of rows in the maze.
+        entry: (x, y) coordinate of the maze entrance.
+        exit: (x, y) coordinate of the maze exit.
+        output_file: Path to the file the maze output will be written to.
+        perfect: Whether the maze should be generated as a perfect maze
+            (no loops).
+        seed: Optional random seed for reproducible generation.
+    """
 
     width: int
     height: int
@@ -20,7 +31,22 @@ class Config:
 
 
 def parse_config(filepath: str) -> Config:
-    """Read, parse, and validate a configuration file."""
+    """Read, parse, and validate a configuration file.
+
+    Reads a KEY=VALUE formatted file, converts each required field to its
+    proper type, and validates the resulting configuration.
+
+    Args:
+        filepath: Path to the configuration file.
+
+    Returns:
+        A validated Config instance.
+
+    Raises:
+        ConfigError: If the file cannot be found or read, contains
+            malformed lines, is missing required keys, has duplicate
+            keys, or fails validation.
+    """
     path = Path(filepath)
 
     try:
@@ -102,7 +128,18 @@ def parse_config(filepath: str) -> Config:
 
 
 def parse_int(value: str, key: str) -> int:
-    """Convert a configuration value to an integer."""
+    """Convert a configuration value to an integer.
+
+    Args:
+        value: The raw string value to convert.
+        key: Name of the configuration key, used in error messages.
+
+    Returns:
+        The parsed integer.
+
+    Raises:
+        ConfigError: If value cannot be converted to an integer.
+    """
     try:
         return int(value)
     except ValueError as exc:
@@ -110,7 +147,18 @@ def parse_int(value: str, key: str) -> int:
 
 
 def parse_positive_int(value: str, key: str) -> int:
-    """Convert a configuration value to a positive integer."""
+    """Convert a configuration value to a positive integer.
+
+    Args:
+        value: The raw string value to convert.
+        key: Name of the configuration key, used in error messages.
+
+    Returns:
+        The parsed integer, guaranteed to be greater than 0.
+
+    Raises:
+        ConfigError: If value is not an integer, or is not greater than 0.
+    """
     number = parse_int(value, key)
 
     if number <= 0:
@@ -123,7 +171,19 @@ def parse_coordinate(
     value: str,
     key: str,
 ) -> tuple[int, int]:
-    """Parse coordinates in x,y format."""
+    """Parse coordinates in x,y format.
+
+    Args:
+        value: The raw string value, expected as "x,y".
+        key: Name of the configuration key, used in error messages.
+
+    Returns:
+        A tuple of (x, y) integers.
+
+    Raises:
+        ConfigError: If value is not in "x,y" format, or x/y are not
+            valid integers.
+    """
     parts = value.split(",")
 
     if len(parts) != 2:
@@ -136,7 +196,19 @@ def parse_coordinate(
 
 
 def parse_bool(value: str, key: str) -> bool:
-    """Convert True/False text to a boolean."""
+    """Convert True/False text to a boolean.
+
+    Args:
+        value: The raw string value, expected to be "True" or "False"
+            (case-insensitive).
+        key: Name of the configuration key, used in error messages.
+
+    Returns:
+        The parsed boolean.
+
+    Raises:
+        ConfigError: If value is not "True" or "False".
+    """
     normalized = value.lower()
 
     if normalized == "true":
@@ -149,7 +221,18 @@ def parse_bool(value: str, key: str) -> bool:
 
 
 def validate_config(config: Config) -> None:
-    """Validate the configuration values."""
+    """Validate the configuration values.
+
+    Checks that the entry and exit coordinates fall within the maze
+    bounds and that they are not the same cell.
+
+    Args:
+        config: The Config instance to validate.
+
+    Raises:
+        ConfigError: If entry or exit is outside the maze bounds, or if
+            entry and exit are the same coordinate.
+    """
     entry_x, entry_y = config.entry
     exit_x, exit_y = config.exit
 
