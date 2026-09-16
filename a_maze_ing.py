@@ -4,13 +4,23 @@ from src.config import ConfigError, parse_config
 from src.mazegen.generator import Generator
 from src.maze_view.maze_view import MazeView
 from src.solver import bfs_solve
+from src.writer.output_writer import writer_hex
 
 
 from src.writer.output_writer import OutputWriter
 
 
 def main() -> None:
-    """Run A-Maze-ing."""
+    """Parse configuration file,
+      generate a maze then write the output (hexadecimal format)
+
+    Reads a config file path form command line arg, parses
+    it then draw the maze
+
+    Raises:
+         SystemExit: If the number of command line is incorrect or the config
+         file is wrong misconfigured
+    """
     if len(sys.argv) != 2:
         print("Usage: python3 a_maze_ing.py <config_file>", file=sys.stderr)
         sys.exit(1)
@@ -25,14 +35,19 @@ def main() -> None:
 
     generator = Generator(config)
     grid = generator.generate()
-    path = bfs_solve(grid, config.entry, config.exit)
-
-    OutputWriter.write(
-        grid, config.entry, config.exit, path, config.output_file
-    )
+    shortest = bfs_solve(grid, config.entry, config.exit)
 
     view = MazeView(grid, config.entry, config.exit, bfs_solve, generator)
     view.run()
+    writer_hex(
+        grid,
+        shortest,
+        config.entry,
+        config.exit,
+        config.height,
+        config.width,
+        config.output_file,
+    )
 
 
 if __name__ == "__main__":

@@ -16,3 +16,8 @@
 - Implementing Implementing BFS algorithm to find the shortest path between entry and exit points.
 - Adding toggle view on the ascii terminal for BFS found cells.
 
+
+16/09/2026
+
+- Finish Implementing hexa writer .
+- Implementing Makefile

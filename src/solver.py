@@ -13,6 +13,10 @@ def bfs_solve(
         entry: Starting point
         exit: Ending point
 
+    Return:
+        return a list of nodes which represents the shortest path between
+        start and end
+
 
     """
     queue: deque[tuple[int, int]] = deque()

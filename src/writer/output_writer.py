@@ -1,60 +1,67 @@
 from src.mazegen.grid import Grid
-import sys
+from src.mazegen.cell import Cell
 
 
-class OutputWriter:
-    @staticmethod
-    def write(
-        grid: Grid,
-        entry: tuple[int, int],
-        exit_coord: tuple[int, int],
-        path: list[tuple[int, int]],
-        filepath: str,
-    ) -> None:
-        """Writes the maze configuration and solution to a file."""
-        if not path:
-            path_str = ""
-        else:
-            ordered = path[::-1]
-            if ordered[0] != entry:
-                ordered = path
+def writer_hex(
+    grid: Grid,
+    shortest_path: list[tuple[int, int]],
+    entry: tuple[int, int],
+    exit: tuple[int, int],
+    row: int,
+    col: int,
+    file_name: str,
+) -> None:
+    """Write the hexa data into the given file
 
-            directions = []
-            for i in range(len(ordered) - 1):
-                curr = ordered[i]
-                nxt = ordered[i + 1]
-                if nxt[0] == curr[0] + 1 and nxt[1] == curr[1]:
-                    directions.append("E")
-                elif nxt[0] == curr[0] - 1 and nxt[1] == curr[1]:
-                    directions.append("W")
-                elif nxt[0] == curr[0] and nxt[1] == curr[1] + 1:
-                    directions.append("S")
-                elif nxt[0] == curr[0] and nxt[1] == curr[1] - 1:
-                    directions.append("N")
-            path_str = "".join(directions)
+    Args:
+        grid: Takes the grid after generating the maze
+        shortest_path: The list of the shortest path nodes between entry
+           and exit
+        entry: entry point
+        exit: exit point
+        row: Number of rows (height)
+        col: Number of col (width)
+        file_name: desired file to print to
+    """
+    try:
+        with open(file_name, "w") as file:
+            for x in range(row):
+                for y in range(col):
+                    cell: Cell = grid.get_cell(y, x)
+                    cell_value: int = 0
+                    if cell.north is True:
+                        cell_value += 1
+                    if cell.east is True:
+                        cell_value += 2
+                    if cell.south:
+                        cell_value += 4
+                    if cell.west:
+                        cell_value += 8
 
-        try:
-            with open(filepath, "w", encoding="utf-8") as f:
-                for y in range(grid.height):
-                    row_hex = ""
-                    for x in range(grid.width):
-                        cell = grid.get_cell(x, y)
-                        val = 0
-                        if cell.north:
-                            val |= 1
-                        if cell.east:
-                            val |= 2
-                        if cell.south:
-                            val |= 4
-                        if cell.west:
-                            val |= 8
-                        row_hex += hex(val)[2:].upper()
-                    f.write(row_hex + "\n")
+                    file.write(str(hex(cell_value)[2:]))
 
-                f.write("\n")
-                f.write(f"{entry[0]},{entry[1]}\n")
-                f.write(f"{exit_coord[0]},{exit_coord[1]}\n")
-                f.write(path_str + "\n")
-        except OSError as e:
-            print(f"Error writing output to {filepath}: {e}", file=sys.stderr)
+                file.write("\n")
 
+            file.write(f"\n{entry[0]},{entry[1]}\n")
+            file.write(f"{exit[0]},{exit[1]}")
+            shortest_path.reverse()
+            directions: str = ""
+            # print(shortest_path)
+            for coordinate in range(1, len(shortest_path)):
+                current = shortest_path[coordinate]
+                before = shortest_path[coordinate - 1]
+                if current[0] != before[0]:
+                    if current[0] > before[0]:
+                        directions += "E"
+                    if current[0] < before[0]:
+                        directions += "W"
+                if current[1] != before[1]:
+                    if current[1] > before[1]:
+                        directions += "S"
+                    if current[1] < before[1]:
+                        directions += "N"
+            # print(directions)
+            file.write(f"\n{directions}")
+
+    except Exception as e:
+        print(f"Invalid file {e}")

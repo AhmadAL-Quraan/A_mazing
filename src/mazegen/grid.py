@@ -10,6 +10,9 @@ class Grid:
     its own walls. Cells are automatically created and populated based on
     the given width and height when the Grid is instantiated.
 
+    x here representing columns
+    y representing rows
+
     Attributes:
         width: Number of columns in the grid.
         height: Number of rows in the grid.
@@ -23,6 +26,7 @@ class Grid:
     cells: list[list[Cell]] = field(default_factory=list)
 
     def __post_init__(self) -> None:
+        """Initialize the cells objects in the grid"""
         if not self.cells:
             self.cells = [
                 [Cell(x, y) for x in range(self.width)]
@@ -30,11 +34,15 @@ class Grid:
             ]
 
     def get_cell(self, x: int, y: int) -> Cell:
+        """Get cell's object based on it's index
+
+        Args:
+            x: it's columns position in the grid
+            y: it's rows position in the grid
+
+        Return:
+            return the cell object on a specific position
+        """
         if not (0 <= x < self.width and 0 <= y < self.height):
             raise IndexError(f"({x},{y}) out of bounds")
         return self.cells[y][x]
-
-    def print_cells(self) -> None:
-        for y in range(self.height):
-            for x in range(self.width):
-                print(f"({self.cells[y][x].x}, {self.cells[y][x].y})")
