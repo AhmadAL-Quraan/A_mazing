@@ -15,7 +15,8 @@ def writer_hex(
 
     Args:
         grid: Takes the grid after generating the maze
-        shortest_path: The list of the shortest path nodes between entry and exit
+        shortest_path: The list of the shortest path nodes between entry
+           and exit
         entry: entry point
         exit: exit point
         row: Number of rows (height)
@@ -28,9 +29,9 @@ def writer_hex(
                 for y in range(col):
                     cell: Cell = grid.get_cell(y, x)
                     cell_value: int = 0
-                    if cell.north == True:
+                    if cell.north is True:
                         cell_value += 1
-                    if cell.east == True:
+                    if cell.east is True:
                         cell_value += 2
                     if cell.south:
                         cell_value += 4

@@ -1,7 +1,6 @@
 from .grid import Grid
 from src.config import Config
 import random
-from src.mazegen import Cell
 
 
 class Generator:
@@ -138,19 +137,19 @@ class Generator:
                     not_broken: list[str] = []
                     cell = grid.get_cell(x, y)
                     count: int = 4
-                    if cell.east == True:
+                    if cell.east is True:
                         count -= 1
                         if x != self.config.width - 1:
                             not_broken.append("east")
-                    if cell.north == True:
+                    if cell.north is True:
                         count -= 1
                         if y != 0:
                             not_broken.append("north")
-                    if cell.south == True:
+                    if cell.south is True:
                         count -= 1
                         if y != self.config.height - 1:
                             not_broken.append("south")
-                    if cell.west == True:
+                    if cell.west is True:
                         count -= 1
                         if x != 0:
                             not_broken.append("west")
