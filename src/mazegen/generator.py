@@ -67,7 +67,7 @@ class Generator:
             x += 1
             patterN_42.add((x, y))
 
-    def generate(self) -> Grid:
+    def generate(self) -> tuple[Grid, int]:
         """Generate and return a maze as a Grid.
 
         Returns:
@@ -87,6 +87,15 @@ class Generator:
             cell.north = True
             cell.south = True
             cell.west = True
+
+        if self.config.entry in patterN_42:
+            print("Entry nodes can't be inside 42 pattern")
+            print("Exit the program")
+            return grid, 1
+        if self.config.exit in patterN_42:
+            print("Exit nodes can't be inside 42 pattern")
+            print("Exit the program")
+            return grid, 1
 
         stack: list[tuple[int, int]] = [(0, 0)]
         visited.add((0, 0))
@@ -172,4 +181,4 @@ class Generator:
                             cell.south = False
                             grid.get_cell(x, y + 1).north = False
 
-        return grid
+        return (grid, 0)

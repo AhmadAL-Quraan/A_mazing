@@ -21,3 +21,6 @@
 
 - Finish Implementing hexa writer .
 - Implementing Makefile
+- Fixing seed issue, adding it to the config file, now if the seed is fixed it will generate the same maze each time.
+- Solving a real bug where if the entry and exit where inside the 42 pattern, the code will crash, proper error where given.
+

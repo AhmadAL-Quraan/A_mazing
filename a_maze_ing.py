@@ -7,9 +7,6 @@ from src.solver import bfs_solve
 from src.writer.output_writer import writer_hex
 
 
-from src.writer.output_writer import OutputWriter
-
-
 def main() -> None:
     """Parse configuration file,
       generate a maze then write the output (hexadecimal format)
@@ -31,10 +28,11 @@ def main() -> None:
         print(f"Error: {error}", file=sys.stderr)
         sys.exit(1)
 
-    print(config)
-
     generator = Generator(config)
-    grid = generator.generate()
+    grid, check_error = generator.generate()
+    if check_error == 1:
+        sys.exit(1)
+
     shortest = bfs_solve(grid, config.entry, config.exit)
 
     view = MazeView(grid, config.entry, config.exit, bfs_solve, generator)

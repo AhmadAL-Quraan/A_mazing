@@ -81,7 +81,9 @@ def parse_config(filepath: str) -> Config:
                 f"Line {line_number}: configuration key is empty."
             )
 
-        if not value:
+        # SEED is allowed to be empty (SEED= with nothing after it);
+        # every other key still requires a non-empty value.
+        if not value and key != "SEED":
             raise ConfigError(
                 f"Line {line_number}: value for '{key}' is empty."
             )
@@ -112,6 +114,7 @@ def parse_config(filepath: str) -> Config:
     entry = parse_coordinate(data["ENTRY"], "ENTRY")
     exit_coord = parse_coordinate(data["EXIT"], "EXIT")
     perfect = parse_bool(data["PERFECT"], "PERFECT")
+    seed = parse_optional_seed(data.get("SEED"))
 
     config = Config(
         width=width,
@@ -120,6 +123,7 @@ def parse_config(filepath: str) -> Config:
         exit=exit_coord,
         output_file=data["OUTPUT_FILE"],
         perfect=perfect,
+        seed=seed,
     )
 
     validate_config(config)
@@ -167,10 +171,7 @@ def parse_positive_int(value: str, key: str) -> int:
     return number
 
 
-def parse_coordinate(
-    value: str,
-    key: str,
-) -> tuple[int, int]:
+def parse_coordinate(value: str, key: str) -> tuple[int, int]:
     """Parse coordinates in x,y format.
 
     Args:
@@ -218,6 +219,27 @@ def parse_bool(value: str, key: str) -> bool:
         return False
 
     raise ConfigError(f"{key} must be True or False, got '{value}'.")
+
+
+def parse_optional_seed(value: str | None) -> int | None:
+    """Parse the optional SEED value.
+
+    Args:
+        value: The raw SEED value from the config file, or None if the
+            SEED key was never present at all.
+
+    Returns:
+        The parsed integer seed, or None if the key was absent or its
+        value was left empty (e.g. "SEED=" with nothing after it).
+
+    Raises:
+        ConfigError: If a non-empty SEED value is present but is not a
+            valid integer.
+    """
+    if value is None or value == "":
+        return None
+
+    return parse_int(value, "SEED")
 
 
 def validate_config(config: Config) -> None:

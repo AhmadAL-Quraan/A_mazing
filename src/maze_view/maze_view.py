@@ -215,7 +215,7 @@ class MazeView:
 
     def _regenerate(self) -> None:
         """Generate a brand new maze and reset path/display state."""
-        self.grid = self._generator.generate()
+        self.grid = self._generator.generate()[0]
         self.path = []
         self.show_path = False
 
