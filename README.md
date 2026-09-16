@@ -37,6 +37,7 @@ ENTRY=0,0
 EXIT=19,14
 OUTPUT_FILE=maze.txt
 PERFECT=False
+SEED=42
 ```
 
 **Usage Example:**
@@ -78,6 +79,7 @@ print("Shortest Path Coordinates:", shortest_path)
 - [x] README
 - [x] Flake8 and mypy check 
 - [x] Docstrings
+- [x] Fixing Seed issue
 
 
 ## Debugging  

@@ -29,7 +29,10 @@ def main() -> None:
         sys.exit(1)
 
     generator = Generator(config)
-    grid = generator.generate()
+    grid, check_error = generator.generate()
+    if check_error == 1:
+        sys.exit(1)
+
     shortest = bfs_solve(grid, config.entry, config.exit)
 
     view = MazeView(grid, config.entry, config.exit, bfs_solve, generator)
