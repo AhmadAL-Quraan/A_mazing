@@ -76,6 +76,7 @@ class Generator:
         grid: Grid = Grid(self.config.width, self.config.height)
         dx = [1, -1, 0, 0]
         dy = [0, 0, 1, -1]
+
         directions = ["east", "west", "south", "north"]
 
         visited: set[tuple[int, int]] = set()
@@ -145,6 +146,7 @@ class Generator:
                         continue
                     not_broken: list[str] = []
                     cell = grid.get_cell(x, y)
+                    # Open cells
                     count: int = 4
                     if cell.east is True:
                         count -= 1

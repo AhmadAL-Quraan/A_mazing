@@ -1,5 +1,4 @@
 import sys
-
 from src.config import ConfigError, parse_config
 from src.mazegen.generator import Generator
 from src.maze_view.maze_view import MazeView
@@ -34,7 +33,6 @@ def main() -> None:
         sys.exit(1)
 
     shortest = bfs_solve(grid, config.entry, config.exit)
-
     view = MazeView(grid, config.entry, config.exit, bfs_solve, generator)
     view.run()
     writer_hex(

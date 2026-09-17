@@ -1,4 +1,4 @@
-*This activity has been created as part of the 42 curriculum by Ahmad AL-Quraan and Alhareth Tahtamoni.*
+*This activity has been created as part of the 42 curriculum by aqoraan, atahtamo.*
 
 ## Description
 This project aims to make a maze for pacman-like game.

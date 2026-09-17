@@ -8,9 +8,10 @@ through a simple numbered terminal menu.
 """
 
 from __future__ import annotations
-
+import shutil
 import os
 from typing import Callable
+import sys
 
 from src.mazegen.cell import Cell
 from src.mazegen.generator import Generator
@@ -85,6 +86,19 @@ class MazeView:
         exit cells, shades the "42" pattern cells, and overlays the
         solution path if show_path is enabled.
         """
+        term_size = shutil.get_terminal_size(fallback=(80, 24))
+        needed_cols = self.grid.width * 2 + 1
+        needed_lines = self.grid.height * 2 + 1
+        if term_size.columns < needed_cols or term_size.lines < needed_lines:
+            print(
+                f"Error: config specifies a \
+{self.grid.width}x{self.grid.height} maze "
+                f"({needed_cols}x{needed_lines} chars)\
+, which won't fit in your "
+                f"{term_size.columns}x{term_size.lines} terminal.",
+                file=sys.stderr,
+            )
+            sys.exit(1)
         os.system("cls" if os.name == "nt" else "clear")
         wall_color = _WALL_COLORS[self.color_index]
         path_cells = set(self.path) if self.show_path else set()
@@ -191,27 +205,34 @@ class MazeView:
         """Run the interactive terminal menu loop until the user quits."""
         self.draw()
         while True:
-            print()
-            print("=== A-Maze-ing ===")
-            print("1. Re-generate a new maze")
-            print("2. Show/Hide path from entry to exit")
-            print("3. Rotate maze colors")
-            print("4. Quit")
-            choice = input("Choice? (1-4): ").strip()
+            try:
+                print()
+                print("=== A-Maze-ing ===")
+                print("1. Re-generate a new maze")
+                print("2. Show/Hide path from entry to exit")
+                print("3. Rotate maze colors")
+                print("4. Quit")
+                choice = input("Choice? (1-4): ").strip()
 
-            if choice == "1":
-                self._regenerate()
-            elif choice == "2":
-                self._toggle_path()
-            elif choice == "3":
-                self._rotate_color()
-            elif choice == "4":
-                break
-            else:
-                print("Invalid choice, please enter 1-4.")
-                continue
+                if choice == "1":
+                    self._regenerate()
+                elif choice == "2":
+                    self._toggle_path()
+                elif choice == "3":
+                    self._rotate_color()
+                elif choice == "4":
+                    break
+                else:
+                    print("Invalid choice, please enter 1-4.")
+                    continue
 
-            self.draw()
+                self.draw()
+            except KeyboardInterrupt as e:
+                print(f"\nKeyboardInterrupt {e}")
+                sys.exit(1)
+            except Exception as e:
+                print(f"\nError happened {e}")
+                sys.exit(1)
 
     def _regenerate(self) -> None:
         """Generate a brand new maze and reset path/display state."""
