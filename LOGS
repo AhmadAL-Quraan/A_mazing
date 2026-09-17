@@ -1,0 +1,26 @@
+## Tasks 
+
+
+13/9/2026
+
+- Implementing perfect maze using DFS with backtracking algorithm
+- Finishing Configuration format and checking 
+
+14/9/2026
+
+- Implementing Imperfect maze using the same algorithm from the perfect one but with breaking some extra walls, by checking if any walls has only one open wall, then make it 2 walls opens with constraints about the edges wall also the 42 pattern neighbors.
+
+  
+15/9/2026
+
+- Implementing Implementing BFS algorithm to find the shortest path between entry and exit points.
+- Adding toggle view on the ascii terminal for BFS found cells.
+
+
+16/09/2026
+
+- Finish Implementing hexa writer .
+- Implementing Makefile
+- Fixing seed issue, adding it to the config file, now if the seed is fixed it will generate the same maze each time.
+- Solving a real bug where if the entry and exit where inside the 42 pattern, the code will crash, proper error where given.
+
