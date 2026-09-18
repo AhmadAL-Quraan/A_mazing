@@ -27,14 +27,20 @@ def main() -> None:
         print(f"Error: {error}", file=sys.stderr)
         sys.exit(1)
 
+    if config.height == 2 and config.width == 2 and not config.perfect:
+        print("2x2 is not a valid maze for pacman")
+        sys.exit(1)
+    if config.height == 1 or config.width == 1 and not config.perfect:
+        print("1x1 is not a valid maze for pacman")
+        sys.exit(1)
     generator = Generator(config)
     grid, check_error = generator.generate()
     if check_error == 1:
         sys.exit(1)
-
     shortest = bfs_solve(grid, config.entry, config.exit)
     view = MazeView(grid, config.entry, config.exit, bfs_solve, generator)
     view.run()
+
     writer_hex(
         grid,
         shortest,

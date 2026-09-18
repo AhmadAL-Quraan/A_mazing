@@ -142,6 +142,7 @@ class Generator:
         if not self.config.perfect:
             for y in range(self.config.height):
                 for x in range(self.config.width):
+
                     if (x, y) in patterN_42:
                         continue
                     not_broken: list[str] = []
@@ -167,7 +168,9 @@ class Generator:
 
                     choose: str
                     if count == 1:
-
+                        if len(not_broken) == 0:
+                            print("Error happened while choosing a neighbor\
+- no neighbor to choose from")
                         choose = self.rng.choice(not_broken)
                         if choose == "east" and (x + 1, y) not in patterN_42:
                             cell.east = False
@@ -182,5 +185,22 @@ class Generator:
                         if choose == "south" and (x, y + 1) not in patterN_42:
                             cell.south = False
                             grid.get_cell(x, y + 1).north = False
+                    if self.config.height < 7 or self.config.width < 9:
+                        i = int(self.config.width/2)
+                        j = int(self.config.height/2)
+                        width, height = self.config.width, self.config.height
+                        cell = grid.get_cell(i, j)
+                        if i+1 < width:
+                            cell.east = False
+                            grid.get_cell(i + 1, j).west = False
+                        if i - 1 >= 0:
+                            cell.west = False
+                            grid.get_cell(i-1, j).east = False
+                        if j + 1 < height:
+                            cell.south = False
+                            grid.get_cell(i, j+1).north = False
+                        if j - 1 >= 0:
+                            cell.north = False
+                            grid.get_cell(i, j-1).south = False
 
         return (grid, 0)
