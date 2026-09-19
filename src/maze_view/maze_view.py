@@ -27,9 +27,9 @@ _WALL_COLORS: list[str] = [
 ]
 _RESET = "\033[0m"
 _ENTRY_COLOR = "\033[95m"  # magenta block
-_EXIT_COLOR = "\033[91m"  # red block
-_PATTERN_COLOR = "\033[90m"  # dim gray block for the "42" pattern
-_PATH_COLOR = "\033[96m"  # cyan for the solution path
+_EXIT_COLOR = "\033[94m"  # red block
+_PATTERN_COLOR = "\033[91m"  # dim gray block for the "42" pattern
+_PATH_COLOR = "\033[92m"  # cyan for the solution path
 
 
 class MazeView:
@@ -87,7 +87,7 @@ class MazeView:
         solution path if show_path is enabled.
         """
         term_size = shutil.get_terminal_size(fallback=(80, 24))
-        needed_cols = self.grid.width * 2 + 1
+        needed_cols = self.grid.width * 3 + 1
         needed_lines = self.grid.height * 2 + 1
         if term_size.columns < needed_cols or term_size.lines < needed_lines:
             print(
