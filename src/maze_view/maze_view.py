@@ -92,10 +92,9 @@ class MazeView:
         if term_size.columns < needed_cols or term_size.lines < needed_lines:
             print(
                 f"Error: config specifies a \
-{self.grid.width}x{self.grid.height} maze "
-                f"({needed_cols}x{needed_lines} chars)\
-, which won't fit in your "
-                f"{term_size.columns}x{term_size.lines} terminal.",
+{self.grid.width}x{self.grid.height} maze\
+" f"({needed_cols}x{needed_lines} chars)\
+, which won't fit in your " f"{term_size.columns}x{term_size.lines} terminal.",
                 file=sys.stderr,
             )
             sys.exit(1)
