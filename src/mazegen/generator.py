@@ -185,22 +185,40 @@ class Generator:
                         if choose == "south" and (x, y + 1) not in patterN_42:
                             cell.south = False
                             grid.get_cell(x, y + 1).north = False
-                    if self.config.height < 7 or self.config.width < 9:
-                        i = int(self.config.width/2)
-                        j = int(self.config.height/2)
-                        width, height = self.config.width, self.config.height
-                        cell = grid.get_cell(i, j)
-                        if i+1 < width:
-                            cell.east = False
-                            grid.get_cell(i + 1, j).west = False
-                        if i - 1 >= 0:
-                            cell.west = False
-                            grid.get_cell(i-1, j).east = False
-                        if j + 1 < height:
-                            cell.south = False
-                            grid.get_cell(i, j+1).north = False
-                        if j - 1 >= 0:
-                            cell.north = False
-                            grid.get_cell(i, j-1).south = False
+            if self.config.height < 7 or self.config.width < 9:
+                i = int(self.config.width/2)
+                j = int(self.config.height/2)
+                if self.config.height == 3 and self.config.width == 3:
+                    if grid.get_cell(i, j).east:
+                        grid.get_cell(i, j).east = False
+                        grid.get_cell(i + 1, j).west = False
+                        return (grid, 0)
+                    if grid.get_cell(i, j).west:
+                        grid.get_cell(i, j).west = False
+                        grid.get_cell(i - 1, j).east = False
+                        return (grid, 0)
+                    if grid.get_cell(i, j).north:
+                        grid.get_cell(i, j).north = False
+                        grid.get_cell(i, j - 1).south = False
+                        return (grid, 0)
+                    if grid.get_cell(i, j).south:
+                        grid.get_cell(i, j).south = False
+                        grid.get_cell(i, j + 1).north = False
+                        return (grid, 0)
+                else:
+                    width, height = self.config.width, self.config.height
+                    cell = grid.get_cell(i, j)
+                    if i + 1 < width:
+                        cell.east = False
+                        grid.get_cell(i + 1, j).west = False
+                    if i - 1 >= 0:
+                        cell.west = False
+                        grid.get_cell(i-1, j).east = False
+                    if j + 1 < height:
+                        cell.south = False
+                        grid.get_cell(i, j+1).north = False
+                    if j - 1 >= 0:
+                        cell.north = False
+                        grid.get_cell(i, j-1).south = False
 
         return (grid, 0)
