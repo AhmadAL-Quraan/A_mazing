@@ -1,4 +1,3 @@
-*This activity has been created as part of the 42 curriculum by Ahmad aqoraan and atahtamo.*
 
 ## Description
 This project aims to make a maze generator and solver. The output is a visual and playable board for a Pac-Man-like game.
